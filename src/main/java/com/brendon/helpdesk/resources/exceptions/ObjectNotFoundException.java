@@ -1,4 +1,4 @@
-package com.brendon.helpdesk.services;
+package com.brendon.helpdesk.resources.exceptions;
 
 public class ObjectNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
