@@ -11,8 +11,8 @@ import com.brendon.helpdesk.domain.Tecnico;
 import com.brendon.helpdesk.domain.dtos.TecnicoDTO;
 import com.brendon.helpdesk.repositories.PessoaRepository;
 import com.brendon.helpdesk.repositories.TecnicoRepository;
-import com.brendon.helpdesk.resources.exceptions.DataIntegrityViolationException;
-import com.brendon.helpdesk.resources.exceptions.ObjectNotFoundException;
+import com.brendon.helpdesk.services.exceptions.DataIntegrityViolationException;
+import com.brendon.helpdesk.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class TecnicoService {
