@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
 import com.brendon.helpdesk.domain.enums.Prioridade;
 import com.brendon.helpdesk.domain.enums.Status;
@@ -28,7 +27,7 @@ public class Chamado implements Serializable{
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataFechamento;
 	
-	
+	 
 	private Prioridade prioridade;
 	private Status status;
 	private String titulo;
