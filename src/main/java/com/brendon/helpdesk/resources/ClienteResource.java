@@ -1,7 +1,6 @@
 package com.brendon.helpdesk.resources;
 
 import java.net.URI;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +8,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,27 +22,26 @@ import com.brendon.helpdesk.domain.Cliente;
 import com.brendon.helpdesk.domain.dtos.ClienteDTO;
 import com.brendon.helpdesk.services.ClienteService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/clientes")
 public class ClienteResource {
-	
+
 	@Autowired
 	private ClienteService service;
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<ClienteDTO> findById(@PathVariable Integer id){
-		Cliente obj = service.findById(id);		
-		return ResponseEntity.ok().body(new ClienteDTO(obj));		
+	public ResponseEntity<ClienteDTO> findById(@PathVariable Integer id) {
+		Cliente obj = service.findById(id);
+		return ResponseEntity.ok().body(new ClienteDTO(obj));
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = service.findAll();
 		List<ClienteDTO> listDTO = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO objDTO) {
 		Cliente newObj = service.create(objDTO);
@@ -59,8 +56,9 @@ public class ClienteResource {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<ClienteDTO> delete(@PathVariable Integer id){
-		service.delete(id);
+	public ResponseEntity<ClienteDTO> delete(@PathVariable Integer id) {
+		service.delete(id); 
 		return ResponseEntity.noContent().build();
 	}
+
 }

@@ -4,40 +4,37 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CPF;
 
 import com.brendon.helpdesk.domain.Tecnico;
 import com.brendon.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class TecnicoDTO implements Serializable{
-
+public class TecnicoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	protected Integer id;
-	
 	@NotNull(message = "O campo NOME é requerido")
-	protected String nome;	
-	
+	protected String nome;
 	@NotNull(message = "O campo CPF é requerido")
-	protected String cpf;	
-	
-	@NotNull(message = "O campo E-MAIL é requerido")
+	@CPF
+	protected String cpf;
+	@NotNull(message = "O campo EMAIL é requerido")
 	protected String email;
-	
 	@NotNull(message = "O campo SENHA é requerido")
-	protected String senha;	
-	
+	protected String senha;
 	protected Set<Integer> perfis = new HashSet<>();
-	
+
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataCriacao = LocalDate.now();
 
 	public TecnicoDTO() {
 		super();
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public TecnicoDTO(Tecnico obj) {
@@ -49,6 +46,7 @@ public class TecnicoDTO implements Serializable{
 		this.senha = obj.getSenha();
 		this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
 		this.dataCriacao = obj.getDataCriacao();
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Integer getId() {
@@ -106,8 +104,5 @@ public class TecnicoDTO implements Serializable{
 	public void setDataCriacao(LocalDate dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
-	
-	
-	
-	
+
 }

@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,27 +23,26 @@ import com.brendon.helpdesk.domain.Tecnico;
 import com.brendon.helpdesk.domain.dtos.TecnicoDTO;
 import com.brendon.helpdesk.services.TecnicoService;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping(value = "/tecnicos")
 public class TecnicoResource {
-	
+
 	@Autowired
 	private TecnicoService service;
-	
+
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id){
-		Tecnico obj = service.findById(id);		
-		return ResponseEntity.ok().body(new TecnicoDTO(obj));		
+	public ResponseEntity<TecnicoDTO> findById(@PathVariable Integer id) {
+		Tecnico obj = service.findById(id);
+		return ResponseEntity.ok().body(new TecnicoDTO(obj));
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<List<TecnicoDTO>> findAll() {
 		List<Tecnico> list = service.findAll();
 		List<TecnicoDTO> listDTO = list.stream().map(obj -> new TecnicoDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 	}
-	
+
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<TecnicoDTO> create(@Valid @RequestBody TecnicoDTO objDTO) {
@@ -62,8 +60,27 @@ public class TecnicoResource {
 	
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<TecnicoDTO> delete(@PathVariable Integer id){
-		service.delete(id);
+	public ResponseEntity<TecnicoDTO> delete(@PathVariable Integer id) {
+		service.delete(id); 
 		return ResponseEntity.noContent().build();
 	}
+
 }
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

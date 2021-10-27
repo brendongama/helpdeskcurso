@@ -18,23 +18,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.brendon.helpdesk.domain.dtos.CredenciaisDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class JWTAutenticationFilter extends UsernamePasswordAuthenticationFilter {
+public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private AuthenticationManager authenticationManager;
 	private JWTUtil jwtUtil;
 
-	public JWTAutenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
+	public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
 		super();
 		this.authenticationManager = authenticationManager;
 		this.jwtUtil = jwtUtil;
 	}
-	
+
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
 		try {
-			CredenciaisDTO credenciaisDTO = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDTO.class);
-			UsernamePasswordAuthenticationToken authenticationToken =  new UsernamePasswordAuthenticationToken(credenciaisDTO.getEmail(), credenciaisDTO.getSenha(), new ArrayList<>());
+			CredenciaisDTO creds = new ObjectMapper().readValue(request.getInputStream(), CredenciaisDTO.class);
+			UsernamePasswordAuthenticationToken authenticationToken = 
+					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
 			Authentication authentication = authenticationManager.authenticate(authenticationToken);
 			return authentication;
 		} catch (Exception e) {
@@ -55,6 +56,7 @@ public class JWTAutenticationFilter extends UsernamePasswordAuthenticationFilter
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
+		
 		response.setStatus(401);
 		response.setContentType("application/json");
 		response.getWriter().append(json());
@@ -63,11 +65,11 @@ public class JWTAutenticationFilter extends UsernamePasswordAuthenticationFilter
 	private CharSequence json() {
 		long date = new Date().getTime();
 		return "{"
-				+ "\"timestamp\": " + date + ", "
+				+ "\"timestamp\": " + date + ", " 
 				+ "\"status\": 401, "
 				+ "\"error\": \"Não autorizado\", "
 				+ "\"message\": \"Email ou senha inválidos\", "
 				+ "\"path\": \"/login\"}";
-		
 	}
+	
 }

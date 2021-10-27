@@ -11,7 +11,7 @@ import com.brendon.helpdesk.services.DBService;
 @Configuration
 @Profile("dev")
 public class DevConfig {
-	
+
 	@Autowired
 	private DBService dbService;
 	
@@ -22,8 +22,7 @@ public class DevConfig {
 	public boolean instanciaDB() {
 		if(value.equals("create")) {
 			this.dbService.instanciaDB();
-		}	
+		}
 		return false;
 	}
-
 }

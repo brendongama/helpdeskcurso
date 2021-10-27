@@ -12,7 +12,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JWTUtil {
 	
-	@Value("${jwt.expiration}")	
+	@Value("${jwt.expiration}")
 	private Long expiration;
 	
 	@Value("${jwt.secret}")
@@ -36,7 +36,7 @@ public class JWTUtil {
 			if(username != null && expirationDate != null && now.before(expirationDate)) {
 				return true;
 			}
-		} 
+		}
 		return false;
 	}
 

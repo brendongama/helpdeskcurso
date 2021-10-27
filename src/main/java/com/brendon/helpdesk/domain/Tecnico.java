@@ -1,6 +1,5 @@
 package com.brendon.helpdesk.domain;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +12,7 @@ import com.brendon.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Tecnico extends Pessoa implements Serializable{
+public class Tecnico extends Pessoa {
 	private static final long serialVersionUID = 1L;
 
 	@JsonIgnore
@@ -48,6 +47,5 @@ public class Tecnico extends Pessoa implements Serializable{
 	public void setChamados(List<Chamado> chamados) {
 		this.chamados = chamados;
 	}
-	
-	
+
 }

@@ -16,43 +16,40 @@ import com.brendon.helpdesk.domain.dtos.ChamadoDTO;
 import com.brendon.helpdesk.domain.enums.Prioridade;
 import com.brendon.helpdesk.domain.enums.Status;
 import com.brendon.helpdesk.repositories.ChamadoRepository;
-import com.brendon.helpdesk.services.exceptions.ObjectNotFoundException;
+import com.brendon.helpdesk.services.exceptions.ObjectnotFoundException;
 
 @Service
 public class ChamadoService {
 
 	@Autowired
-	private ChamadoRepository chamadoRepository;
-	
+	private ChamadoRepository repository;
 	@Autowired
 	private TecnicoService tecnicoService;
-	
 	@Autowired
 	private ClienteService clienteService;
-	
-	
+
 	public Chamado findById(Integer id) {
-		Optional<Chamado> obj = chamadoRepository.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado: "+id));
+		Optional<Chamado> obj = repository.findById(id);
+		return obj.orElseThrow(() -> new ObjectnotFoundException("Objeto não encontrado! ID: " + id));
 	}
 
-	public List<Chamado> findAll() {		
-		return chamadoRepository.findAll();
+	public List<Chamado> findAll() {
+		return repository.findAll();
 	}
 
-	public Chamado create(@Valid ChamadoDTO objDTO) {
-		return chamadoRepository.save(newChamado(objDTO));
+	public Chamado create(ChamadoDTO obj) {
+		return repository.save(newChamado(obj));
 	}
-	
-	public Chamado update(@Valid Integer id, ChamadoDTO objDTO) {
+
+	public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
 		objDTO.setId(id);
 		Chamado oldObj = findById(id);
 		oldObj = newChamado(objDTO);
-		return chamadoRepository.save(oldObj);
+		return repository.save(oldObj);
 	}
-	
+
 	private Chamado newChamado(ChamadoDTO obj) {
-		Tecnico tecncio = tecnicoService.findById(obj.getTecnico());
+		Tecnico tecnico = tecnicoService.findById(obj.getTecnico());
 		Cliente cliente = clienteService.findById(obj.getCliente());
 		
 		Chamado chamado = new Chamado();
@@ -64,17 +61,29 @@ public class ChamadoService {
 			chamado.setDataFechamento(LocalDate.now());
 		}
 		
-		chamado.setTecnico(tecncio);
+		chamado.setTecnico(tecnico);
 		chamado.setCliente(cliente);
 		chamado.setPrioridade(Prioridade.toEnum(obj.getPrioridade()));
 		chamado.setStatus(Status.toEnum(obj.getStatus()));
 		chamado.setTitulo(obj.getTitulo());
 		chamado.setObservacoes(obj.getObservacoes());
-		
 		return chamado;
-		
-		
 	}
 
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

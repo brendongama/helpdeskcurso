@@ -1,7 +1,7 @@
 package com.brendon.helpdesk.domain.enums;
 
 public enum Prioridade {
-	
+
 	BAIXA(0, "BAIXA"), MEDIA(1, "MEDIA"), ALTA(2, "ALTA");
 	
 	private Integer codigo;
@@ -31,7 +31,6 @@ public enum Prioridade {
 			}
 		}
 		
-		throw new IllegalArgumentException("Prioridade inválido");
+		throw new IllegalArgumentException("Prioridade inválida");
 	}
-
 }

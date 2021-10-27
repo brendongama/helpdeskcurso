@@ -10,7 +10,7 @@ import com.brendon.helpdesk.services.DBService;
 @Configuration
 @Profile("test")
 public class TestConfig {
-	
+
 	@Autowired
 	private DBService dbService;
 	
@@ -18,5 +18,4 @@ public class TestConfig {
 	public void instanciaDB() {
 		this.dbService.instanciaDB();
 	}
-
 }

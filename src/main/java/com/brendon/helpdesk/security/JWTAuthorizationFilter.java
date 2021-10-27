@@ -14,15 +14,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
-	
-	private JWTUtil jwtUtil;
-	private UserDetailsService detailsService;
+public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
-	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil, UserDetailsService detailsService) {
+	private JWTUtil jwtUtil;
+	private UserDetailsService userDetailsService;
+
+	public JWTAuthorizationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil,
+			UserDetailsService userDetailsService) {
 		super(authenticationManager);
 		this.jwtUtil = jwtUtil;
-		this.detailsService = detailsService;
+		this.userDetailsService = userDetailsService;
 	}
 	
 	@Override
@@ -30,9 +31,9 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 			throws IOException, ServletException {
 		String header = request.getHeader("Authorization");
 		if(header != null && header.startsWith("Bearer ")) {
-			UsernamePasswordAuthenticationToken authenticationToken = getAuthentication(header.substring(7));
-			if(authenticationToken != null) {
-				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+			UsernamePasswordAuthenticationToken authToken = getAuthentication(header.substring(7));
+			if(authToken != null) {
+				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
 		chain.doFilter(request, response);
@@ -41,10 +42,22 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		if(jwtUtil.tokenValido(token)) {
 			String username = jwtUtil.getUsername(token);
-			UserDetails details = detailsService.loadUserByUsername(username);
-			return new UsernamePasswordAuthenticationToken(details.getUsername(), null, details
-					.getAuthorities());
+			UserDetails details = userDetailsService.loadUserByUsername(username);
+			return new UsernamePasswordAuthenticationToken(details.getUsername(), null, details.getAuthorities());
 		}
 		return null;
 	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
